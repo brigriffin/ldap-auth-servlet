@@ -1,0 +1,9 @@
+# Config file for Ruby LDAP authentication servlet for nginx HTTP auth request module
+daemonize: false
+http_auth_realm: 'Ruby LDAP authentication servlet'
+ldap_host: 'ldap.enterprise.ch'
+ldap_port: 389
+ldap_auth_attribute: 'uid'
+ldap_auth_base_dn: 'ou=people,dc=enterprise,dc=ch'
+servlet_port: 8888
+servlet_ssl_certificate_cn: 'localhost'
