@@ -1,2 +1,3 @@
 config.yaml
 Gemfile.lock
+.ruby-version

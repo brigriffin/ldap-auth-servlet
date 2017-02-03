@@ -62,6 +62,9 @@ class LDAPAuthServlet < WEBrick::HTTPServlet::AbstractServlet
 						# Return HTTP OK on successful auth
 						puts '[INFO]: Authentication succesful for user '+credentials[0]
 						response.status = 200
+						# Avoid ERR_SSL_SERVER_CERT_BAD_FORMAT from Chrome
+#						response.header['Content-Type'] = 'text/plain'
+#						response.body = 'OK'
 						return
 					else
 						# HTTP Unauthorized on failed auth

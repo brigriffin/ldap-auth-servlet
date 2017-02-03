@@ -1,0 +1,4 @@
+RUNDIR=/var/run/ldap-auth-servlet/
+PIDFILE=/var/run/ldap-auth-servlet/ldap-auth-servlet.pid
+USER=ldap-auth-servlet
+GROUP=ldap-auth-servlet

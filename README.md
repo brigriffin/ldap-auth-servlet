@@ -8,14 +8,16 @@ This simple Ruby script implements a WEBrick HTTPS servlet listening by default 
 
 You will need Ruby and the bundler gem in order to install and run this script. Read below for the installation instructions.
 
-### Install bunlder
+### Install bunlder and gem dependencies
+
+Currently the only required gem is net-ldap:
 
 	$ gem install bundler
-
-### Install dependencies
-Currently the only required gem is net-ldap.
-
 	$ bundle
+
+Alternatively if you are on Debian you can install the ruby-net-ldap package along with Ruby:
+
+	$ sudo apt-get install ruby ruby-net-ldap
 
 ### Configure the script
 
@@ -74,13 +76,43 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 
 	$ ./ldap-auth-servlet.rb
 
-Once you have tested that everything works well it is recommended to run the script in background in daemon mode by changing the `daemonize` parameter in the `config.yaml` file to `true`.
+Once you have tested that everything works well it is recommended to run the script in background in daemon mode by changing the `daemonize` parameter in the `config.yaml` file to `true`. 
+
+Continue with the next step below only if you want to install the script as a daemon which starts automatically at system boot under its own system user.
+
+### Install the script as a service
+
+1. Create a system user for the script to run with
+
+		$ sudo useradd -r ldap-auth-servlet
+
+2. Copy the init file
+
+		$ sudo cp debian/ldap-auth-servlet.init /etc/init.d/ldap-auth-servlet
+
+3. Copy the init default file
+
+		$ sudo cp debian/ldap-auth-servlet.default /etc/default/ldap-auth-servlet
+
+4. Instal SysV init script
+
+		$ sudo update-rc.d ldap-auth-servlet defaults
+
+5. Copy the script and config file to `/opt/ldap-auth-servlet`
+
+		$ sudo mkdir /opt/ldap-auth-servlet
+		$ sudo cp ldap-auth-servlet.rb config.yaml /opt/ldap-auth-servlet
+
+You should now be able to start/stop your script using the `service` command such as:
+
+	$ sudo service ldap-auth-servlet start
 
 ## Tested with
 
 This script has been tested with the following setup:
 
 - Debian 8
+- Ruby 2.1.5p273 (Debian 8 ruby package)
 - Ruby 2.4.0
 - nginx 1.6.2
 - OpenLDAP 2.4
@@ -88,3 +120,4 @@ This script has been tested with the following setup:
 ## TODO
 
 - Support multiple LDAP servers
+- Log daemon output to log file
