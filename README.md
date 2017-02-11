@@ -10,7 +10,7 @@ You will need Ruby and the bundler gem in order to install and run this script. 
 
 ### Install bunlder and gem dependencies
 
-Currently the only required gem is net-ldap:
+Currently the only required gem is net-ldap.
 
 	$ gem install bundler
 	$ bundle
@@ -66,19 +66,19 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 
 	This is required and I did not find any way around it.
 
-		$ touch /etc/nginx/empty.htpasswd
+		$ sudo touch /etc/nginx/empty.htpasswd
 
 4. Reload nginx
 
-		$ systemctl reload nginx
+		$ sudo systemctl reload nginx
 
 ### Start the script
 
 	$ ./ldap-auth-servlet.rb
 
-Once you have tested that everything works well it is recommended to run the script in background in daemon mode by changing the `daemonize` parameter in the `config.yaml` file to `true`. 
+Once you have tested that everything works well it is recommended to run the script in background in daemon mode by setting the `daemonize` parameter in the `config.yaml` file to `true`. 
 
-Continue with the next step below only if you want to install the script as a daemon which starts automatically at system boot under its own system user.
+Continue with the step below only if you want to install the script as a daemon on Debian which starts automatically at system boot under its own system user.
 
 ### Install the script as a service
 
@@ -114,7 +114,7 @@ This script has been tested with the following setup:
 - Debian 8
 - Ruby 2.1.5p273 (Debian 8 ruby package)
 - Ruby 2.4.0
-- nginx 1.6.2
+- nginx 1.9.10 (Debian 8 backports package)
 - OpenLDAP 2.4
 
 ## TODO

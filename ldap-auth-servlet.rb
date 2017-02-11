@@ -57,14 +57,11 @@ class LDAPAuthServlet < WEBrick::HTTPServlet::AbstractServlet
 
 				# Catch errors such as Errno::ECONNREFUSED
 				begin
-					# Check for succesfull authentication
+					# Check for successful authentication
 					if ldap.bind
 						# Return HTTP OK on successful auth
-						puts '[INFO]: Authentication succesful for user '+credentials[0]
+						puts '[INFO]: Authentication successful for user '+credentials[0]
 						response.status = 200
-						# Avoid ERR_SSL_SERVER_CERT_BAD_FORMAT from Chrome
-#						response.header['Content-Type'] = 'text/plain'
-#						response.body = 'OK'
 						return
 					else
 						# HTTP Unauthorized on failed auth
@@ -97,18 +94,18 @@ else
 	puts '[WARNING]: Config file config.yaml does not exist, using default configuration parameters.'
 end
 
-# Setup WEBrick with servlet
+# Setup WEBrick for LDAP authentication servlet
 cert_name = [['CN', config['servlet_ssl_certificate_cn']]]
 server = WEBrick::HTTPServer.new(:Port => config['servlet_port'], :SSLEnable => true, :SSLCertName => cert_name)
 server.mount '/', LDAPAuthServlet, config
 
-# Start WEBrick as daemon in background
+# Prepare for running WEBrick as background daemon
 if config['daemonize'] == true
 	WEBrick::Daemon.start
 end
 
-trap('INT') {
-	  server.shutdown
-}
+# Nicely shutdown WEBrick on INT signal
+trap 'INT' do server.shutdown end
 
+# Start WEBrick
 server.start
