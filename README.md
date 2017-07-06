@@ -17,7 +17,7 @@ Currently, the only required gem is net-ldap.
 
 Alternatively, if you are on Debian you can install the ruby-net-ldap package along with Ruby:
 
-	$ apt-get install ruby ruby-net-ldap
+	# apt-get install ruby ruby-net-ldap
 
 ### Configure the script
 
@@ -25,7 +25,7 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 
 ### Configure nginx
 
-1. Add to your nginx HTTP configuration (e.g. `/etc/nginx/conf.d/auth_cache.conf`):
+1. Add to your nginx http configuration (e.g. `/etc/nginx/conf.d/auth_cache.conf`):
 
 	```
 	proxy_cache_path cache/ keys_zone=auth_cache:5m;
@@ -66,11 +66,11 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 
 	This is required and I did not find any way around it.
 
-		$ touch /etc/nginx/empty.htpasswd
+		# touch /etc/nginx/empty.htpasswd
 
 4. Reload nginx
 
-		$ systemctl reload nginx
+		# systemctl reload nginx
 
 ### Start the script
 
@@ -84,28 +84,28 @@ Continue with the step below, only if you want to install the script as a daemon
 
 1. Create a system user for the script to run with
 
-		$ useradd -r ldap-auth-servlet
+		# useradd -r ldap-auth-servlet
 
 2. Copy the init file
 
-		$ cp debian/ldap-auth-servlet.init /etc/init.d/ldap-auth-servlet
+		# cp debian/ldap-auth-servlet.init /etc/init.d/ldap-auth-servlet
 
 3. Copy the init default file
 
-		$ cp debian/ldap-auth-servlet.default /etc/default/ldap-auth-servlet
+		# cp debian/ldap-auth-servlet.default /etc/default/ldap-auth-servlet
 
 4. Install the SysV init script
 
-		$ update-rc.d ldap-auth-servlet defaults
+		# update-rc.d ldap-auth-servlet defaults
 
 5. Copy the script and config file to `/opt/ldap-auth-servlet`
 
-		$ mkdir /opt/ldap-auth-servlet
-		$ cp ldap-auth-servlet.rb config.yaml /opt/ldap-auth-servlet
+		# mkdir /opt/ldap-auth-servlet
+		# cp ldap-auth-servlet.rb config.yaml /opt/ldap-auth-servlet
 
 You should now be able to start/stop your script using the `service` command, such as:
 
-	$ service ldap-auth-servlet start
+	# service ldap-auth-servlet start
 
 ## Tested with
 
