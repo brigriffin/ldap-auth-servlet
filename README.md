@@ -1,23 +1,23 @@
 # Ruby LDAP authentication servlet for nginx HTTP auth request module
 
-nginx does not offer HTTP authentication using LDAP (or any other type of databases) as backend out of the box. Fortunately nginx features a module named ngx_http_auth_request_module which enables client authorization based on the result of an HTTP/HTTPS subrequest. Using this module in combination with the nginx HTTP proxy module it is possible to authenticate against any web service returning either an HTTP 200 code on authentication success or HTTP 401 code on authentication failure.
+nginx does not offer HTTP authentication using LDAP (or any other type of database) as backend out of the box. Fortunately, nginx features a module named ngx_http_auth_request_module, which enables client authorization based on the result of a HTTP/HTTPS subrequest. Using this module in combination with the nginx HTTP proxy module, makes it possible to authenticate against any web service returning either a HTTP 200 code on authentication success or HTTP 401 code on authentication failure.
 
-This simple Ruby script implements a WEBrick HTTPS servlet listening by default on port 8888 in order to authenticate against an LDAP server using STARTTLS and thus enabling you to provide LDAP authentication for your nginx website.
+This simple Ruby script implements a WEBrick HTTPS servlet, listening by default on port 8888, in order to authenticate against a LDAP server using STARTTLS and thus enables LDAP authentication for nginx websites.
 
 ## Installation
 
-You will need Ruby and the bundler gem in order to install and run this script. Read below for the installation instructions.
+You will need Ruby and the bundler gem in order to install and run this script. Read below for installation instructions.
 
-### Install bunlder and gem dependencies
+### Install bundler and gem dependencies
 
-Currently the only required gem is net-ldap.
+Currently, the only required gem is net-ldap.
 
 	$ gem install bundler
 	$ bundle
 
-Alternatively if you are on Debian you can install the ruby-net-ldap package along with Ruby:
+Alternatively, if you are on Debian you can install the ruby-net-ldap package along with Ruby:
 
-	$ sudo apt-get install ruby ruby-net-ldap
+	# apt-get install ruby ruby-net-ldap
 
 ### Configure the script
 
@@ -31,7 +31,7 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 	proxy_cache_path cache/ keys_zone=auth_cache:5m;
 	```
 
-	The credentials are cached for 5 minutes, feel free to increase or decrease. If you change this parameter do not forget to also adapt `proxy_cache_valid` under point 2. below.
+	The credentials are cached for 5 minutes, feel free to increase or decrease. If you change this parameter, do not forget to also adapt `proxy_cache_valid` under point 2. below.
 
 2. Add to your nginx server configuration (e.g. `/etc/nginx/conf.d/mywebsite.ch`):
 
@@ -51,7 +51,7 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 	}
 	```
 
-	This will protect the whole website. It is also possible to protect parts of it by including the first block in an nginx specific location such as `/private`:
+	This will protect the entire website. It is also possible to protect parts of it, by including the first block in an nginx specific location, such as `/private`:
 
 	```
 	location /private {
@@ -66,46 +66,46 @@ Copy the sample `config.sample.yaml` file as `config.yaml` and adapt it for your
 
 	This is required and I did not find any way around it.
 
-		$ sudo touch /etc/nginx/empty.htpasswd
+		# touch /etc/nginx/empty.htpasswd
 
 4. Reload nginx
 
-		$ sudo systemctl reload nginx
+		# systemctl reload nginx
 
 ### Start the script
 
 	$ ./ldap-auth-servlet.rb
 
-Once you have tested that everything works well it is recommended to run the script in background in daemon mode by setting the `daemonize` parameter in the `config.yaml` file to `true`. 
+Once you have tested that everything works well it is recommended to run the script in the background in daemon mode, by setting the `daemonize` parameter in the `config.yaml` file to `true`. 
 
-Continue with the step below only if you want to install the script as a daemon on Debian which starts automatically at system boot under its own system user.
+Continue with the step below, only if you want to install the script as a daemon on Debian and have it start automatically on system boot under its own system user.
 
 ### Install the script as a service
 
 1. Create a system user for the script to run with
 
-		$ sudo useradd -r ldap-auth-servlet
+		# useradd -r ldap-auth-servlet
 
 2. Copy the init file
 
-		$ sudo cp debian/ldap-auth-servlet.init /etc/init.d/ldap-auth-servlet
+		# cp debian/ldap-auth-servlet.init /etc/init.d/ldap-auth-servlet
 
 3. Copy the init default file
 
-		$ sudo cp debian/ldap-auth-servlet.default /etc/default/ldap-auth-servlet
+		# cp debian/ldap-auth-servlet.default /etc/default/ldap-auth-servlet
 
-4. Instal SysV init script
+4. Install the SysV init script
 
-		$ sudo update-rc.d ldap-auth-servlet defaults
+		# update-rc.d ldap-auth-servlet defaults
 
 5. Copy the script and config file to `/opt/ldap-auth-servlet`
 
-		$ sudo mkdir /opt/ldap-auth-servlet
-		$ sudo cp ldap-auth-servlet.rb config.yaml /opt/ldap-auth-servlet
+		# mkdir /opt/ldap-auth-servlet
+		# cp ldap-auth-servlet.rb config.yaml /opt/ldap-auth-servlet
 
-You should now be able to start/stop your script using the `service` command such as:
+You should now be able to start/stop your script using the `service` command, such as:
 
-	$ sudo service ldap-auth-servlet start
+	# service ldap-auth-servlet start
 
 ## Tested with
 
